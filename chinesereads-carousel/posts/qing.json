@@ -1,0 +1,23 @@
+{
+  "slug": "qing",
+  "cover": {
+    "background": "assets/backgrounds/tea_fields.jpg",
+    "title": "Is \"qing\" the most mistaken Chinese character?",
+    "subtitle": "Swipe to see the different types",
+    "darken": 0.0
+  },
+  "slides": [
+    { "hanzi": "青", "pinyin": "qīng", "meaning": "blue-green / youth" },
+    { "hanzi": "晴", "pinyin": "qíng", "meaning": "clear / sunny (weather)" },
+    { "hanzi": "清", "pinyin": "qīng", "meaning": "clear / pure (water)" },
+    { "hanzi": "情", "pinyin": "qíng", "meaning": "feeling / emotion" },
+    { "hanzi": "请", "pinyin": "qǐng", "meaning": "please / to invite" }
+  ],
+  "caption": "Five characters, one sound. 青 is the phonetic component hiding inside all of them — and once you see it, you can guess the pronunciation of characters you have never met before.",
+  "cta": "Read real Chinese texts for free at chinesereads.com 📖 (link in bio)",
+  "hashtags": [
+    "#learnchinese", "#chinesetexts", "#chinesereads", "#mandarin",
+    "#hsk", "#chinesecharacters", "#studychinese"
+  ],
+  "include_final": true
+}

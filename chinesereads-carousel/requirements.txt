@@ -1,0 +1,3 @@
+# Núcleo — sólo esto hace falta para generar carruseles
+Pillow>=10.0.0
+fonttools>=4.40.0

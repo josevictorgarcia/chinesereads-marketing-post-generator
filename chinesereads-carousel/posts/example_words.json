@@ -1,0 +1,15 @@
+{
+  "slug": "weather-words",
+  "cover": {
+    "background": "assets/backgrounds/tea_fields.jpg",
+    "title": "Talk about the weather like a native",
+    "subtitle": "5 words you actually need",
+    "darken": 0.25
+  },
+  "slides": [
+    { "hanzi": "天气预报", "pinyin": "tiānqì yùbào", "meaning": "weather forecast" },
+    { "hanzi": "下雨", "pinyin": "xià yǔ", "meaning": "to rain" }
+  ],
+  "caption": "Two of these are verbs in Chinese but nouns in English.",
+  "include_final": false
+}

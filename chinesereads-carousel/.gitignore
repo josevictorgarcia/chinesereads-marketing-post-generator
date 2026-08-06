@@ -1,0 +1,14 @@
+# entorno virtual
+.venv/
+venv/
+env/
+
+# secretos
+.env
+
+# Python
+__pycache__/
+*.pyc
+
+# opcional: descomenta si no quieres versionar los carruseles generados
+# output/
