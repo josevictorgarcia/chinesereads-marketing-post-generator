@@ -62,10 +62,12 @@ class Theme:
     cover_sub_size: int = 62
     cover_sub_max_w: float = 0.84
     cover_stroke_w: int = 9          # grosor del contorno negro
-    cover_logo_y: float = 0.775
-    cover_logo_w: float = 0.075
-    cover_domain_y: float = 0.828
-    cover_domain_size: int = 40
+    # La marca va como imagen: assets/footer.png es el lockup oficial
+    # (símbolo + logotipo). Se le pone un halo blanco detrás para que el rojo
+    # se lea sobre cualquier foto, clara u oscura.
+    cover_lockup_y: float = 0.815    # centro vertical del lockup
+    cover_lockup_w: float = 0.34     # ancho, en fracción del lienzo
+    cover_lockup_halo: int = 3       # radio del halo blanco, en px (0 = sin halo)
 
     # --- auto-contraste de la portada ---
     # Mide la luminancia real detrás de cada bloque de texto y oscurece SOLO
@@ -89,10 +91,8 @@ class Theme:
     meaning_size: int = 66
     meaning_max_w: float = 0.74      # más ancho = menos cortes raros de línea
     handle_y: float = 0.875
-    handle_size: int = 40
+    handle_size: int = 44
     handle_text: str = "@chinesereads.com"
-
-    domain_text: str = "chinesereads.com"
 
     # --- fuentes: primera que exista gana ---
     # Tras assets/fonts/ van los respaldos del sistema: primero Linux, luego
@@ -121,6 +121,14 @@ class Theme:
         "/usr/share/fonts/opentype/noto/NotoSansCJK-Black.ttc#2",  # cubre tonos ǎ ǐ ǒ ǔ ǚ
         "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
         "/System/Library/Fonts/Avenir Next.ttc#2",
+    ])
+    # Tipografía de marca: la del logotipo de assets/footer.png. Se usa allí
+    # donde aparece el nombre escrito, para que case con el lockup.
+    font_brand: list = field(default_factory=lambda: [
+        "assets/fonts/Brand.ttf",
+        "/usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf",
+        "/System/Library/Fonts/Supplemental/Charter.ttc#3",         # Charter Bold
+        "/System/Library/Fonts/Supplemental/Georgia Bold.ttf",
     ])
 
 
@@ -251,6 +259,37 @@ def apply_scrim(img: Image.Image, bands: list[tuple[int, int]], t: Theme) -> Ima
     return Image.composite(black, img, mask)
 
 
+def paste_lockup(img: Image.Image, cx: float, cy: float, width: int, halo: int = 0,
+                 name: str = "footer.png") -> None:
+    """
+    Pega el lockup de marca (assets/footer.png) centrado en (cx, cy).
+
+    Con `halo` > 0 dibuja antes una silueta blanca difuminada del propio
+    logotipo, para que el rojo se lea igual sobre una foto clara que sobre una
+    oscura sin tener que tocar la portada a mano.
+    """
+    src = ROOT / "assets" / name
+    if not src.exists():
+        print(f"  ⚠  no encuentro assets/{name} — la portada va sin la marca")
+        return
+
+    lock = Image.open(src).convert("RGBA")
+    lock = lock.resize((width, round(width * lock.height / lock.width)), Image.LANCZOS)
+    x, y = round(cx - lock.width / 2), round(cy - lock.height / 2)
+
+    if halo > 0:
+        # Resplandor difuminado, NO una silueta dilatada: en el logotipo las
+        # letras quedan a pocos píxeles unas de otras, así que dilatarlas las
+        # funde en un bloque y el halo sale como un rectángulo blanco. Un
+        # desenfoque realzado da cuerpo sin llegar a cerrar los huecos.
+        soft = lock.split()[3].filter(ImageFilter.GaussianBlur(halo))
+        glow = Image.new("RGBA", lock.size, (255, 255, 255, 0))
+        glow.putalpha(soft.point(lambda v: min(255, int(v * 2.2))))
+        img.paste(glow, (x, y), glow)
+
+    img.paste(lock, (x, y), lock)
+
+
 def cover_crop(path: Path, size: int) -> Image.Image:
     """Recorta la foto a cuadrado centrado, tipo object-fit: cover."""
     im = Image.open(path).convert("RGB")
@@ -282,7 +321,7 @@ def render_cover(cover: dict, out: Path, t: Theme = THEME) -> Path:
         img = apply_scrim(img, [
             (int(SIZE * (t.cover_title_y - 0.17)), int(SIZE * (t.cover_title_y + 0.17))),
             (int(SIZE * (t.cover_sub_y - 0.075)), int(SIZE * (t.cover_sub_y + 0.075))),
-            (int(SIZE * (t.cover_logo_y - 0.055)), int(SIZE * (t.cover_domain_y + 0.04))),
+            (int(SIZE * (t.cover_lockup_y - 0.10)), int(SIZE * (t.cover_lockup_y + 0.10))),
         ], t)
 
     draw = ImageDraw.Draw(img)
@@ -306,18 +345,8 @@ def render_cover(cover: dict, out: Path, t: Theme = THEME) -> Path:
                    fill=t.cover_fill, stroke_width=t.cover_stroke_w - 2,
                    stroke_fill=t.cover_stroke)
 
-    # logo + dominio
-    logo_path = ROOT / "assets" / "logo.png"
-    if logo_path.exists():
-        logo = Image.open(logo_path).convert("RGBA")
-        w = int(SIZE * t.cover_logo_w)
-        logo = logo.resize((w, round(w * logo.height / logo.width)), Image.LANCZOS)
-        img.paste(logo, (SIZE // 2 - logo.width // 2,
-                         int(SIZE * t.cover_logo_y) - logo.height // 2), logo)
-
-    dfont = load_font(t.font_cover, t.cover_domain_size)
-    draw.text((SIZE / 2, SIZE * t.cover_domain_y), t.domain_text, font=dfont,
-              anchor="mm", fill=t.red_dark, stroke_width=3, stroke_fill="#FFFFFF")
+    paste_lockup(img, SIZE / 2, SIZE * t.cover_lockup_y,
+                 int(SIZE * t.cover_lockup_w), t.cover_lockup_halo)
 
     img.save(out, quality=95)
     return out
@@ -353,8 +382,10 @@ def render_content(slide: dict, out: Path, t: Theme = THEME) -> Path:
                                    int(SIZE * t.meaning_max_w), int(SIZE * 0.20))
         draw_block(draw, lines, font, lh, SIZE * t.meaning_y, SIZE, fill=t.red)
 
+    # El nombre escrito va en la tipografía de marca, no en la de los textos,
+    # para que case con el logotipo de la portada.
     draw.text((SIZE / 2, SIZE * t.handle_y), t.handle_text,
-              font=load_font(t.font_latin, t.handle_size), anchor="mm", fill=t.ink)
+              font=load_font(t.font_brand, t.handle_size), anchor="mm", fill=t.red_dark)
 
     img.save(out, quality=95)
     return out
