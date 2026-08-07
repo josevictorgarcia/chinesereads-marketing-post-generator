@@ -10,5 +10,8 @@ env/
 __pycache__/
 *.pyc
 
-# opcional: descomenta si no quieres versionar los carruseles generados
-# output/
+# basura de macOS
+.DS_Store
+
+# carruseles generados: se rehacen con un comando, no se versionan
+output/
