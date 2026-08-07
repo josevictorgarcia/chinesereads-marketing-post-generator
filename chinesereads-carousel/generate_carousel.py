@@ -53,12 +53,14 @@ class Theme:
     cover_stroke: str = "#000000"
 
     # --- portada ---
-    cover_title_y: float = 0.285     # centro vertical del bloque de título
-    cover_title_size: int = 82       # tamaño máximo (se reduce solo si no cabe)
-    cover_title_max_w: float = 0.86
-    cover_sub_y: float = 0.545
-    cover_sub_size: int = 56
-    cover_sub_max_w: float = 0.82
+    # Cuerpos pensados para que el título siga legible en la miniatura del
+    # feed (~160 px de lado), no solo a pantalla completa.
+    cover_title_y: float = 0.275     # centro vertical del bloque de título
+    cover_title_size: int = 100      # tamaño máximo (se reduce solo si no cabe)
+    cover_title_max_w: float = 0.88
+    cover_sub_y: float = 0.555
+    cover_sub_size: int = 62
+    cover_sub_max_w: float = 0.84
     cover_stroke_w: int = 9          # grosor del contorno negro
     cover_logo_y: float = 0.775
     cover_logo_w: float = 0.075
@@ -76,34 +78,49 @@ class Theme:
     cover_darken: float = 0.0        # oscurecimiento global extra, manual (0-1)
 
     # --- slides de contenido ---
-    hanzi_y: float = 0.200
-    hanzi_size: int = 165
-    pinyin_y: float = 0.447
-    pinyin_size: int = 88
-    meaning_y: float = 0.660
-    meaning_size: int = 62
-    meaning_max_w: float = 0.68
-    handle_y: float = 0.885
-    handle_size: int = 42
+    # El bloque hanzi → pinyin → significado va centrado dentro del marco, con
+    # separaciones parecidas entre los tres. Antes colgaba de arriba y dejaba
+    # un cuarto de la slide vacío por debajo del significado.
+    hanzi_y: float = 0.285
+    hanzi_size: int = 200
+    pinyin_y: float = 0.505
+    pinyin_size: int = 96
+    meaning_y: float = 0.655
+    meaning_size: int = 66
+    meaning_max_w: float = 0.74      # más ancho = menos cortes raros de línea
+    handle_y: float = 0.875
+    handle_size: int = 40
     handle_text: str = "@chinesereads.com"
 
     domain_text: str = "chinesereads.com"
 
     # --- fuentes: primera que exista gana ---
+    # Tras assets/fonts/ van los respaldos del sistema: primero Linux, luego
+    # macOS. Los tres macOS están comprobados con los tonos ǎ ǐ ǒ ǔ ǚ.
+    #
+    #   portada  Helvetica Neue Condensed Black — condensada, así entra más
+    #            texto por línea y el cuerpo puede ser mayor: es lo que se lee
+    #            en la miniatura del feed.
+    #   hanzi    Songti SC Black — estilo Ming, con remate en el trazo. Se lee
+    #            como caligrafía y acompaña al marco ornamental.
+    #   latino   Avenir Next Demi Bold — geométrica y redonda para el pinyin.
     font_cover: list = field(default_factory=lambda: [
         "assets/fonts/Cover.ttf",
         "/usr/share/fonts/truetype/google-fonts/Poppins-Bold.ttf",
         "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
+        "/System/Library/Fonts/HelveticaNeue.ttc#9",
     ])
     font_hanzi: list = field(default_factory=lambda: [
         "assets/fonts/Hanzi.ttf",
         "/usr/share/fonts/opentype/noto/NotoSansCJK-Black.ttc#2",  # Noto Sans CJK SC Black
         "/usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc#2",
+        "/System/Library/Fonts/Supplemental/Songti.ttc#0",
     ])
     font_latin: list = field(default_factory=lambda: [
         "assets/fonts/Latin.ttf",
         "/usr/share/fonts/opentype/noto/NotoSansCJK-Black.ttc#2",  # cubre tonos ǎ ǐ ǒ ǔ ǚ
         "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
+        "/System/Library/Fonts/Avenir Next.ttc#2",
     ])
 
 

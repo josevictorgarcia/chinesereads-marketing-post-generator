@@ -1,3 +1,4 @@
 # Para write_post.py (textos con Claude) y ai_background.py (fondos por IA)
 anthropic>=0.40.0
 requests>=2.31.0
+python-dotenv>=1.0.0

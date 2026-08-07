@@ -118,9 +118,29 @@ Para pasar a 4:5 (ocupa más pantalla en Instagram) cambia `SIZE` por una tupla 
 
 ## Fuentes
 
-Por defecto: Poppins Bold en la portada, Noto Sans CJK SC Black en las slides de contenido.
+El generador prueba, para cada rol, la primera fuente que exista: primero tu
+`assets/fonts/`, luego las de Linux, luego las de macOS.
 
-**Por qué Noto y no algo más bonito:** a Poppins y a la mayoría de fuentes de diseño les faltan los glifos del tercer tono — `ǎ ǐ ǒ ǔ ǚ`. Un `qǐng` te saldría como un cuadrado vacío. Noto CJK los cubre todos. El script comprueba la cobertura antes de dibujar y avisa por consola si detecta un glifo que falta, en vez de dejarte publicar el cuadrado.
+| Rol | Linux | macOS |
+|---|---|---|
+| portada | Poppins Bold | Helvetica Neue Condensed Black |
+| hanzi | Noto Sans CJK SC Black | Songti SC Black |
+| pinyin y significado | Noto Sans CJK SC Black | Avenir Next Demi Bold |
+
+**Por qué condensada en la portada:** entra más texto por línea, así el cuerpo
+puede ser mayor sin que el título se parta en cuatro. Lo que decide si alguien
+se para en el post es si el titular se lee en la miniatura del feed, a unos
+160 px de lado.
+
+**Por qué Songti en el hanzi:** es un estilo Ming, con remate en el trazo. Se
+lee como caligrafía y acompaña al marco ornamental, en vez de parecer texto de
+sistema.
+
+**Cuidado con los tonos:** a la mayoría de fuentes de diseño les faltan los
+glifos del tercer tono — `ǎ ǐ ǒ ǔ ǚ`. Un `qǐng` te saldría como un cuadrado
+vacío. Todas las de la tabla los cubren. El script comprueba la cobertura antes
+de dibujar y avisa por consola si detecta un glifo que falta, en vez de dejarte
+publicar el cuadrado.
 
 Para usar tu tipografía, mete los `.ttf` en `assets/fonts/` con estos nombres:
 

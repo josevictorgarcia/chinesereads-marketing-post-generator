@@ -24,6 +24,12 @@ import subprocess
 import sys
 from pathlib import Path
 
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
+
 ROOT = Path(__file__).parent
 MODEL = "claude-sonnet-4-6"
 
