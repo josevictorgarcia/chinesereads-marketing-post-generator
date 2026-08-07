@@ -29,15 +29,28 @@ La única obligatoria es `generate_carousel.py`.
 ## Inicio rápido
 
 ```bash
-cd chinesereads-carousel
+./carrusel barrio-chino
+```
+
+El script se encarga del entorno virtual: si no existe lo crea e instala las dependencias, así no hay que acordarse de activarlo cada vez que se abre una terminal. Al terminar abre la carpeta con las siete imágenes y el `caption.txt`.
+
+```bash
+./carrusel                 # todos los posts de posts/
+./carrusel qing            # solo uno, por su nombre
+./carrusel --no-abrir      # sin abrir la carpeta al terminar
+```
+
+Sin claves de API, sin cuentas, sin internet.
+
+A mano, si lo prefieres:
+
+```bash
 python3 -m venv .venv
 source .venv/bin/activate          # Windows:  .venv\Scripts\activate
 pip install -r requirements.txt
 
-python generate_carousel.py posts/qing.json
+python generate_carousel.py posts/barrio-chino.json
 ```
-
-Eso es todo lo necesario para tener un carrusel completo en `output/qing/`. Sin claves de API, sin cuentas, sin internet.
 
 ---
 

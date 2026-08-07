@@ -1,0 +1,23 @@
+{
+  "slug": "barrio-chino",
+  "cover": {
+    "background": "assets/backgrounds/barrio_chino.jpg",
+    "title": "You can read this street with 5 words",
+    "subtitle": "Swipe to decode the signs",
+    "darken": 0.0
+  },
+  "slides": [
+    { "hanzi": "唐人街", "pinyin": "tángrénjiē", "meaning": "Chinatown" },
+    { "hanzi": "店",     "pinyin": "diàn",       "meaning": "shop / store" },
+    { "hanzi": "馆",     "pinyin": "guǎn",       "meaning": "venue / eatery" },
+    { "hanzi": "烤鸭",   "pinyin": "kǎoyā",      "meaning": "roast duck" },
+    { "hanzi": "酒店",   "pinyin": "jiǔdiàn",    "meaning": "hotel" }
+  ],
+  "caption": "Every sign on this street is built from these five. 唐人街 is literally \"Tang people street\" — Chinese communities abroad named themselves after the Tang dynasty, not after any modern country, and the name stuck for a thousand years. The other four sort themselves by what you do there: 店 is a place you buy from, 馆 is a place you sit down in. So 烤鸭店 sells you the duck to take away, 川菜馆 sits you down for Sichuan food, and 酒店 — literally \"wine shop\" — stopped meaning tavern centuries ago and now means hotel.",
+  "cta": "Read real Chinese texts for free at chinesereads.com 📖 (link in bio)",
+  "hashtags": [
+    "#learnchinese", "#chinatown", "#chinesereads", "#mandarin",
+    "#hsk", "#chinesecharacters", "#studychinese", "#chinesevocabulary"
+  ],
+  "include_final": true
+}
