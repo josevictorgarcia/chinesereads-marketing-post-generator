@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+#
+# carrusel — generar un post y dejarlo listo para subir
+#
+#   ./carrusel                 todos los posts de posts/
+#   ./carrusel barrio-chino    solo ese (basta el nombre, sin .json)
+#   ./carrusel --no-abrir ...  no abrir la carpeta al terminar
+#
+# Se encarga del entorno virtual: si no existe lo crea e instala lo necesario,
+# así no hay que acordarse de activarlo cada vez que se abre una terminal.
+
+set -euo pipefail
+cd "$(dirname "$0")"
+
+ABRIR=1
+ARGS=()
+for a in "$@"; do
+    case "$a" in
+        --no-abrir) ABRIR=0 ;;
+        *) ARGS+=("$a") ;;
+    esac
+done
+
+PY=".venv/bin/python"
+if [ ! -x "$PY" ]; then
+    echo "→ No hay entorno virtual. Lo creo (esto solo pasa la primera vez)."
+    python3 -m venv .venv
+    "$PY" -m pip install --quiet --upgrade pip
+    "$PY" -m pip install --quiet -r requirements.txt
+    echo "→ Listo."
+fi
+
+# Sin argumentos, renderiza la carpeta entera. Con un nombre suelto, se asume
+# que es un post de posts/ y se completa la ruta.
+if [ ${#ARGS[@]} -eq 0 ]; then
+    DESTINO="posts/"
+else
+    DESTINO="${ARGS[0]}"
+    [ -e "$DESTINO" ] || DESTINO="posts/${DESTINO%.json}.json"
+    if [ ! -e "$DESTINO" ]; then
+        echo "No encuentro '$DESTINO'. Los posts disponibles son:" >&2
+        ls posts/*.json 2>/dev/null | sed 's|posts/|  |; s|\.json$||' >&2
+        exit 1
+    fi
+fi
+
+"$PY" generate_carousel.py "$DESTINO"
+
+# Deja a mano lo único que hace falta para publicar: las imágenes y el pie.
+for dir in output/*/; do
+    [ -f "$dir/caption.txt" ] || continue
+    echo
+    echo "── $dir ──────────────────────────────"
+    echo "Imágenes: $(ls "$dir" | grep -c '\.\(png\|jpg\)$') · pie de foto en ${dir}caption.txt"
+done
+
+if [ "$ABRIR" -eq 1 ] && command -v open >/dev/null 2>&1; then
+    open output/ 2>/dev/null || true
+fi
+
+echo
+echo "Arrastra las imágenes en orden y pega el contenido de caption.txt."

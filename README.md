@@ -10,18 +10,38 @@ Esta carpeta solo es el contenedor del repositorio.
 
 ```bash
 cd chinesereads-carousel
+./carrusel barrio-chino
+```
+
+Ya está. El script se encarga del entorno virtual —lo crea e instala lo que
+haga falta la primera vez— y al terminar abre la carpeta con el resultado:
+siete PNG numerados y `caption.txt`. Sin claves de API, sin cuentas, sin
+internet.
+
+```bash
+./carrusel                 # renderiza todos los posts de posts/
+./carrusel qing            # solo uno, por su nombre
+./carrusel --no-abrir      # sin abrir la carpeta al terminar
+```
+
+Para publicar: arrastra las imágenes **en orden** a Instagram, Metricool o
+Buffer, y pega el contenido de `caption.txt`.
+
+<details>
+<summary>Si prefieres hacerlo a mano</summary>
+
+```bash
+cd chinesereads-carousel
 python3 -m venv .venv
 source .venv/bin/activate          # Windows:  .venv\Scripts\activate
 pip install -r requirements.txt
 
-python generate_carousel.py posts/qing.json
+python generate_carousel.py posts/barrio-chino.json
 ```
 
-Salida en `chinesereads-carousel/output/qing/`: siete PNG numerados y
-`caption.txt`. Sin claves de API, sin cuentas, sin internet.
-
-> Todos los comandos se ejecutan **desde dentro de `chinesereads-carousel/`**,
-> con el entorno virtual activado. Fuera del venv usa `python3`, no `python`.
+Los comandos van **desde dentro de `chinesereads-carousel/`**, con el entorno
+virtual activado. Fuera del venv usa `python3`, no `python`.
+</details>
 
 ## Dónde está cada cosa
 
