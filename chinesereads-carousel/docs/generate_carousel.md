@@ -160,8 +160,22 @@ Si añades una fuente sin tonos completos, el aviso de consola te lo dirá en la
 |---|---|
 | `assets/content_bg.png` | el marco y la textura de papel, sin texto |
 | `assets/final_slide.png` | tu slide de promoción, fija |
-| `assets/logo.png` | logo con transparencia, para la portada |
+| `assets/footer.png` | **el lockup de marca** (símbolo + logotipo), va en la portada |
+| `assets/logo.png` | el símbolo suelto; lo sustituyó `footer.png` y ya no se usa |
 | `assets/backgrounds/` | fotos de portada |
+
+### La marca
+
+`footer.png` es la versión oficial y manda sobre todo lo demás. Va en la
+portada como imagen, con un halo blanco difuminado detrás para que el rojo se
+lea igual sobre una foto clara que sobre una oscura — así no hay que tocar
+nada al cambiar de fondo.
+
+En las slides de contenido el nombre va **escrito**, no como imagen, para no
+repetir el lockup entero siete veces. Se compone en la tipografía de marca
+(`font_brand`: Charter Bold, la que más se acerca al logotipo) y en el rojo
+oscuro de la paleta. Si tienes la tipografía original del logotipo, mete el
+`.ttf` en `assets/fonts/Brand.ttf` y pasa a usarse sola.
 
 `content_bg.png` y `logo.png` los saqué de tus imágenes de ejemplo: al primero le borré el texto por inpainting, del segundo recorté el logo y le añadí canal alfa.
 
